@@ -1,26 +1,18 @@
 import { insertOneInMongodb } from '@/adapters/mongodb/functions'
+import { equals, isTruthy, omit } from '@/utils'
 import { expectToBeTrue } from '@/__tests__/__helpers__'
-import { mongoMemoryServerFactory } from '@/__tests__/__helpers__/mongodb-memory-server.helper'
-import { MongoClient } from 'mongodb'
+import { mongodbTestHelper } from '@/__tests__/__helpers__/mongodb.test-helper'
 
 describe('InsertOneInMongodb', () => {
-  const mongoMemoryServer = mongoMemoryServerFactory()
-  let client: MongoClient
-  let dbUri: string
+  const { start, stop, client } = mongodbTestHelper()
 
-  beforeAll(async () => {
-    dbUri = await mongoMemoryServer.start()
-    client = await new MongoClient(dbUri).connect()
-  })
+  beforeAll(async () => await start())
 
-  afterAll(async () => {
-    await client.close()
-    await mongoMemoryServer.stop()
-  })
+  afterAll(async () => await stop())
 
   const makeSut = () => {
     return {
-      sut: insertOneInMongodb(client),
+      sut: insertOneInMongodb(client()),
     }
   }
 
@@ -28,12 +20,15 @@ describe('InsertOneInMongodb', () => {
     const { sut } = makeSut()
     const collectionName = 'test'
     const payload = { foo: 'bar' }
-    const response = sut({
+    const response = await sut({
       in: collectionName,
       as: payload,
     })
-    const fromDb = await client.db().collection(collectionName).findOne(payload)
-    const result = fromDb !== undefined
+    const fromDb = await client()
+      .db()
+      .collection(collectionName)
+      .findOne(response)
+    const result = isTruthy(fromDb) && equals(payload, omit(fromDb, '_id'))
     expectToBeTrue(result, { printIfNotTrue: response })
   })
 })
