@@ -3,6 +3,7 @@ import type {
   GetOneFnArgs,
 } from '@/protocols/adapters/functions/get-one-function.protocol'
 import type { FindOneOptions, MongoClient } from 'mongodb'
+import { MongoObject } from '../protocols'
 
 export function getOneFromMongodb(
   client: MongoClient,
@@ -14,7 +15,8 @@ export function getOneFromMongodb(
     const founded = await client
       .db()
       .collection(collectionName)
-      .findOne<T>({ [key]: value }, opts)
+      .findOne<MongoObject<T>>({ [key]: value }, opts)
+    delete founded?._id
 
     return founded
   }
