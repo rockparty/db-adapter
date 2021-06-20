@@ -4,11 +4,17 @@ import { expectToBeTrue } from '@/__tests__/__helpers__'
 import { firestoreTestHelper } from '@/__tests__/__helpers__/firestore.test-helpers'
 
 describe('InsertOneInFirestore', () => {
-  const { db } = firestoreTestHelper()
+  const { doBeforeAll, doBeforeEach, doAfterAll, db } = firestoreTestHelper()
+
+  beforeAll(async () => await doBeforeAll())
+
+  beforeEach(async () => await doBeforeEach())
+
+  afterAll(async () => await doAfterAll())
 
   const makeSut = () => {
     return {
-      sut: insertOneInFirestore(db),
+      sut: insertOneInFirestore(db()),
     }
   }
 
@@ -20,7 +26,7 @@ describe('InsertOneInFirestore', () => {
       in: collectionName,
       as: payload,
     })
-    const data = await db
+    const data = await db()
       .collection(collectionName)
       .where('foo', '==', payload.foo)
       .get()
