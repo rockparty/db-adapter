@@ -1,7 +1,7 @@
 import type {
   InsertOneFn,
   InsertOneFnArgs,
-} from '@/protocols/factories/functions/insert-one-factory.protocol'
+} from '@/protocols/adapters/functions/insert-one-function.protocol'
 import type { firestore } from 'firebase-admin/lib/firestore'
 
 export function insertOneInFirestore(db: firestore.Firestore): InsertOneFn {

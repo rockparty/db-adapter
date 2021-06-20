@@ -2,7 +2,7 @@ import type {
   InsertOneFnArgs,
   InsertOneFactory,
   InsertOneFactoryArgs,
-} from '@/protocols/factories/functions/insert-one-factory.protocol'
+} from '@/protocols'
 
 export function insertOneFactory(opts: InsertOneFactoryArgs): InsertOneFactory {
   const { db } = opts

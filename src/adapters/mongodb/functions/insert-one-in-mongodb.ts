@@ -1,7 +1,7 @@
 import type {
   InsertOneFn,
   InsertOneFnArgs,
-} from '@/protocols/factories/functions/insert-one-factory.protocol'
+} from '@/protocols/adapters/functions/insert-one-function.protocol'
 import { clone } from '@/utils'
 import type { CollectionInsertOneOptions, MongoClient } from 'mongodb'
 
