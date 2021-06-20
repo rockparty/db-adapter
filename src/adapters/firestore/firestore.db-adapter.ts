@@ -1,9 +1,9 @@
-import type { InsertOneAdapter } from '@/protocols/adapters/insert-one-adapter.protocol'
-import { insertOneInFirestore } from './functions'
+import type { InsertOneAdapter, GetOneAdapter } from '@/protocols/adapters'
+import { getOneFromFirestore, insertOneInFirestore } from './functions'
 import type { ServiceAccount } from 'firebase-admin'
 import { initializeApp, credential } from 'firebase-admin'
 
-type FirestoreDbAdapter = InsertOneAdapter
+type FirestoreDbAdapter = InsertOneAdapter & GetOneAdapter
 
 export async function firestoreDbAdapter(
   credentials: ServiceAccount,
@@ -14,5 +14,6 @@ export async function firestoreDbAdapter(
   const db = admin.firestore()
   return {
     insertOne: insertOneInFirestore(db),
+    getOne: getOneFromFirestore(db),
   }
 }
