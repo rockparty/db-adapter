@@ -1,41 +1,41 @@
 import { getOneFromMongodb } from '@/adapters/mongodb/functions/get-one-from-mongodb'
-import { GetOneFnArgs } from '@/protocols'
 import { clone, equals, isTruthy, omit } from '@/utils'
-import { expectToBeTrue } from '@/__tests__/__helpers__'
+import {
+  expectToBeTrue,
+  collectionName,
+  payload,
+  getOneArgs,
+} from '@/__tests__/__helpers__'
 import { mongodbTestHelper } from '@/__tests__/__helpers__/mongodb.test-helper'
 
-describe('GetOneInMongodb', () => {
-  const { start, stop, client } = mongodbTestHelper()
+describe('GetOneFromMongodb', () => {
+  const { doBeforeAll, doBeforeEach, doAfterAll, client } =
+    mongodbTestHelper(collectionName)
 
-  beforeAll(async () => await start())
+  beforeAll(async () => await doBeforeAll())
 
-  afterAll(async () => await stop())
+  beforeEach(async () => await doBeforeEach())
+
+  afterAll(async () => await doAfterAll())
 
   const makeSut = () => {
-    const collectionName = 'test'
-    const payload = { foo: 'bar' }
-    const args: GetOneFnArgs<typeof payload> = {
-      from: collectionName,
-      by: 'foo',
-      matching: payload['foo'],
-    }
     return {
       sut: getOneFromMongodb(client()),
       collectionName,
       payload,
-      args,
+      args: getOneArgs,
     }
   }
 
   it('should return falsy', async () => {
     const { sut, args, collectionName, payload } = makeSut()
 
-    const response = await sut(args)
-
     const fromDb = await client()
       .db()
       .collection(collectionName)
       .findOne(payload)
+
+    const response = await sut(args)
 
     const result = !isTruthy(response) && !isTruthy(fromDb)
     expectToBeTrue(result, { printIfNotTrue: response })
@@ -50,12 +50,12 @@ describe('GetOneInMongodb', () => {
       .insertOne(clone(payload))
     const inserted = ops[0]
 
-    const response = await sut(args)
-
     const fromDb = await client()
       .db()
       .collection(collectionName)
       .findOne(payload)
+
+    const response = await sut(args)
 
     const result =
       isTruthy(response) &&

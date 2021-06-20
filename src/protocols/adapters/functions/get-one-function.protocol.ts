@@ -1,6 +1,6 @@
 export interface GetOneFnArgs<T> {
   from: string
-  by: keyof T
+  by: keyof T & string
   matching: unknown
 }
 

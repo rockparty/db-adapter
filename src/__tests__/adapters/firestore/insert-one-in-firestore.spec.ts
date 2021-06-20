@@ -1,6 +1,13 @@
 import { insertOneInFirestore } from '@/adapters/firestore/functions'
 import { equals, isTruthy } from '@/utils'
-import { expectToBeTrue } from '@/__tests__/__helpers__'
+import {
+  expectToBeTrue,
+  collectionName,
+  payload,
+  key,
+  value,
+  insertOneArgs,
+} from '@/__tests__/__helpers__'
 import { firestoreTestHelper } from '@/__tests__/__helpers__/firestore.test-helpers'
 
 describe('InsertOneInFirestore', () => {
@@ -15,23 +22,26 @@ describe('InsertOneInFirestore', () => {
   const makeSut = () => {
     return {
       sut: insertOneInFirestore(db()),
+      collectionName,
+      payload,
+      key,
+      value,
+      args: insertOneArgs,
     }
   }
 
   it('should insert one', async () => {
-    const { sut } = makeSut()
-    const collectionName = 'test'
-    const payload = { foo: 'bar' }
-    const response = await sut({
-      in: collectionName,
-      as: payload,
-    })
+    const { sut, collectionName, payload, key, value, args } = makeSut()
+
+    const response = await sut(args)
+
     const data = await db()
       .collection(collectionName)
-      .where('foo', '==', payload.foo)
+      .where(key, '==', value)
       .get()
-    const fromDb = data.docs[0].data()
+    const fromDb = data.docs[0]?.exists ? data.docs[0].data() : null
+
     const result = isTruthy(fromDb) && equals(payload, fromDb)
-    expectToBeTrue(result, { printIfNotTrue: response })
+    expectToBeTrue(result, { printIfNotTrue: { response, fromDb } })
   })
 })
