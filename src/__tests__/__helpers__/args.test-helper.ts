@@ -1,4 +1,9 @@
-import { GetOneFnArgs, InsertOneFnArgs, UpdateOneFnArgs } from '@/protocols'
+import {
+  DeleteOneFnArgs,
+  GetOneFnArgs,
+  InsertOneFnArgs,
+  UpdateOneFnArgs,
+} from '@/protocols'
 
 interface Foo {
   foo: string
@@ -27,4 +32,10 @@ export const updateOneArgs: UpdateOneFnArgs<Foo, Partial<Foo>> = {
   by: key,
   matching: value,
   as: modified,
+}
+
+export const deleteOneArgs: DeleteOneFnArgs<Foo> = {
+  from: collectionName,
+  by: key,
+  matching: value,
 }
