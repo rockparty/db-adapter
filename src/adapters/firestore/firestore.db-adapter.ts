@@ -1,9 +1,17 @@
-import type { InsertOneAdapter, GetOneAdapter } from '@/protocols/adapters'
-import { getOneFromFirestore, insertOneInFirestore } from './functions'
+import type {
+  InsertOneAdapter,
+  GetOneAdapter,
+  UpdateOneAdapter,
+} from '@/protocols/adapters'
+import {
+  getOneFromFirestore,
+  insertOneInFirestore,
+  updateOneInFirestore,
+} from './functions'
 import { initializeApp } from 'firebase-admin'
 import { FirestoreAdapterArgs } from './protocols'
 
-type FirestoreDbAdapter = InsertOneAdapter & GetOneAdapter
+type FirestoreDbAdapter = InsertOneAdapter & GetOneAdapter & UpdateOneAdapter
 
 export async function firestoreDbAdapter(
   ...args: FirestoreAdapterArgs
@@ -13,5 +21,6 @@ export async function firestoreDbAdapter(
   return {
     insertOne: insertOneInFirestore(db),
     getOne: getOneFromFirestore(db),
+    updateOne: updateOneInFirestore(db),
   }
 }

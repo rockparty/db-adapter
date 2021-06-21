@@ -9,6 +9,7 @@ export const payload: Foo = { foo: 'bar' }
 export const modified: Partial<Foo> = { foo: 'foo' }
 export const key: keyof Foo = 'foo'
 export const value = payload[key]
+export const modifiedValue = modified[key]
 
 export const insertOneArgs: InsertOneFnArgs<Foo> = {
   in: collectionName,
