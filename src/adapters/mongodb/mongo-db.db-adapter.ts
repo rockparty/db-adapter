@@ -7,7 +7,6 @@ import type {
   GetManyAdapter,
 } from '@/protocols/adapters'
 import type {
-  MongodbAdapterArgs,
   MongodbDeleteOneOptions,
   MongodbGetOneOptions,
   MongodbInsertOneOptions,
@@ -21,6 +20,7 @@ import {
   getAllFromMongodb,
   getManyFromMongodb,
 } from './functions'
+import type { MongoClientOptions } from 'mongodb'
 import { MongoClient } from 'mongodb'
 
 type MongodbDbAdapter = InsertOneAdapter<MongodbInsertOneOptions> &
@@ -30,10 +30,14 @@ type MongodbDbAdapter = InsertOneAdapter<MongodbInsertOneOptions> &
   GetAllAdapter &
   GetManyAdapter
 
-export async function mongodbDbAdapter(
-  ...args: MongodbAdapterArgs
-): Promise<MongodbDbAdapter> {
-  const client = await MongoClient.connect(args['0'], args['1'])
+export async function mongodbDbAdapter(opts: {
+  uri: string
+  clientOpts?: MongoClientOptions
+}): Promise<MongodbDbAdapter> {
+  const { uri, clientOpts } = opts
+
+  const client = await MongoClient.connect(uri, clientOpts)
+
   return {
     insertOne: insertOneInMongodb(client),
     getOne: getOneFromMongodb(client),

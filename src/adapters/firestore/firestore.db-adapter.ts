@@ -14,8 +14,8 @@ import {
   insertOneInFirestore,
   updateOneInFirestore,
 } from './functions'
+import type { AppOptions } from 'firebase-admin'
 import { initializeApp } from 'firebase-admin'
-import { FirestoreAdapterArgs } from './protocols'
 
 type FirestoreDbAdapter = InsertOneAdapter &
   GetOneAdapter &
@@ -25,10 +25,16 @@ type FirestoreDbAdapter = InsertOneAdapter &
   GetManyAdapter
 
 export async function firestoreDbAdapter(
-  ...args: FirestoreAdapterArgs
+  opts: {
+    appOpts?: AppOptions
+    appName?: string
+  } = {},
 ): Promise<FirestoreDbAdapter> {
-  const admin = initializeApp(args['0'], args['1'])
+  const { appOpts, appName } = opts
+
+  const admin = initializeApp(appOpts, appName)
   const db = admin.firestore()
+
   return {
     insertOne: insertOneInFirestore(db),
     getOne: getOneFromFirestore(db),
