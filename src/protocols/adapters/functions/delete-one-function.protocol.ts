@@ -1,4 +1,4 @@
-import { CombineArgsAndOptions } from './helpers'
+import type { CombineArgsAndOptions } from './helpers'
 
 interface DeleteOneArgs<T> {
   from: string

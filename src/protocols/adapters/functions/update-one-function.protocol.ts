@@ -1,4 +1,4 @@
-import { CombineArgsAndOptions } from './helpers'
+import type { CombineArgsAndOptions } from './helpers'
 
 interface UpdateOneArgs<T, U> {
   from: string
