@@ -1,7 +1,16 @@
-export interface GetOneFnArgs<T> {
+import { CombineArgsAndOptions } from './helpers'
+
+interface GetOneArgs<T> {
   from: string
   by: keyof T & string
   matching: unknown
 }
 
-export type GetOneFn = <T>(args: GetOneFnArgs<T>) => Promise<T | null>
+export type GetOneFnArgs<T, O = undefined> = CombineArgsAndOptions<
+  GetOneArgs<T>,
+  O
+>
+
+export type GetOneFn<O = undefined> = <T>(
+  args: GetOneFnArgs<T, O>,
+) => Promise<T | null>

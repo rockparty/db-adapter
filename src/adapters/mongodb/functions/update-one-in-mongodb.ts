@@ -2,16 +2,20 @@ import type {
   UpdateOneFn,
   UpdateOneFnArgs,
 } from '@/protocols/adapters/functions/update-one-function.protocol'
-import type { UpdateOneOptions, MongoClient } from 'mongodb'
+import type { MongodbUpdateOneOptions } from '../protocols'
+import type { MongoClient } from 'mongodb'
 
-export function updateOneInMongodb(
-  client: MongoClient,
-  opts?: UpdateOneOptions,
-): UpdateOneFn {
+export function updateOneInMongodb(client: MongoClient): UpdateOneFn {
   return async function <T, U>(
-    args: UpdateOneFnArgs<T, U>,
+    args: UpdateOneFnArgs<T, U, MongodbUpdateOneOptions>,
   ): Promise<(T & U) | null> {
-    const { from: collectionName, by: key, matching: value, as: payload } = args
+    const {
+      from: collectionName,
+      by: key,
+      matching: value,
+      as: payload,
+      opts,
+    } = args
 
     const { value: updated } = await client
       .db()

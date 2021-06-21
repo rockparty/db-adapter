@@ -1,5 +1,5 @@
 import type { GetOneFn } from './functions/get-one-function.protocol'
 
-export interface GetOneAdapter {
-  getOne: GetOneFn
+export interface GetOneAdapter<O = undefined> {
+  getOne: GetOneFn<O>
 }
