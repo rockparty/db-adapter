@@ -1,6 +1,6 @@
 import type { CombineArgsAndOptions } from './helpers'
 
-interface UpdateOneArgs<T, U> {
+interface UpdateOneArgs<T, U extends Partial<T>> {
   from: string
   by: keyof T & string
   matching: unknown
