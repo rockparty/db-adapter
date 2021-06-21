@@ -49,12 +49,17 @@
   "license": "ISC",
   "private": false,
   "keywords": [
+    "orp",
+    "rockparty",
     "node",
     "nodejs",
     "javascript",
     "typescript",
     "lib",
     "library",
+    "database",
+    "db",
+    "adapter",
     "db-adapter"
   ],
   "devDependencies": {
