@@ -4,6 +4,7 @@ import type {
   UpdateOneAdapter,
 } from '@/protocols/adapters'
 import type {
+  MongodbAdapterArgs,
   MongodbGetOneOptions,
   MongodbInsertOneOptions,
   MongodbUpdateOneOptions,
@@ -19,8 +20,10 @@ type MongodbDbAdapter = InsertOneAdapter<MongodbInsertOneOptions> &
   GetOneAdapter<MongodbGetOneOptions<unknown>> &
   UpdateOneAdapter<MongodbUpdateOneOptions>
 
-export async function mongodbDbAdapter(uri: string): Promise<MongodbDbAdapter> {
-  const client = await MongoClient.connect(uri)
+export async function mongodbDbAdapter(
+  ...args: MongodbAdapterArgs
+): Promise<MongodbDbAdapter> {
+  const client = await MongoClient.connect(args['0'], args['1'])
   return {
     insertOne: insertOneInMongodb(client),
     getOne: getOneFromMongodb(client),
