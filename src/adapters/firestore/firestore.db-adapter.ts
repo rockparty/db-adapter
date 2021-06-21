@@ -4,10 +4,12 @@ import type {
   UpdateOneAdapter,
   DeleteOneAdapter,
   GetAllAdapter,
+  GetManyAdapter,
 } from '@/protocols/adapters'
 import {
   deleteOneFromFirestore,
   getAllFromFirestore,
+  getManyFromFirestore,
   getOneFromFirestore,
   insertOneInFirestore,
   updateOneInFirestore,
@@ -19,7 +21,8 @@ type FirestoreDbAdapter = InsertOneAdapter &
   GetOneAdapter &
   UpdateOneAdapter &
   DeleteOneAdapter &
-  GetAllAdapter
+  GetAllAdapter &
+  GetManyAdapter
 
 export async function firestoreDbAdapter(
   ...args: FirestoreAdapterArgs
@@ -32,5 +35,6 @@ export async function firestoreDbAdapter(
     updateOne: updateOneInFirestore(db),
     deleteOne: deleteOneFromFirestore(db),
     getAll: getAllFromFirestore(db),
+    getMany: getManyFromFirestore(db),
   }
 }

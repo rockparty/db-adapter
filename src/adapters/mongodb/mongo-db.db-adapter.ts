@@ -4,6 +4,7 @@ import type {
   UpdateOneAdapter,
   DeleteOneAdapter,
   GetAllAdapter,
+  GetManyAdapter,
 } from '@/protocols/adapters'
 import type {
   MongodbAdapterArgs,
@@ -18,6 +19,7 @@ import {
   updateOneInMongodb,
   deleteOneFromMongodb,
   getAllFromMongodb,
+  getManyFromMongodb,
 } from './functions'
 import { MongoClient } from 'mongodb'
 
@@ -25,7 +27,8 @@ type MongodbDbAdapter = InsertOneAdapter<MongodbInsertOneOptions> &
   GetOneAdapter<MongodbGetOneOptions<unknown>> &
   UpdateOneAdapter<MongodbUpdateOneOptions> &
   DeleteOneAdapter<MongodbDeleteOneOptions<unknown>> &
-  GetAllAdapter
+  GetAllAdapter &
+  GetManyAdapter
 
 export async function mongodbDbAdapter(
   ...args: MongodbAdapterArgs
@@ -37,5 +40,6 @@ export async function mongodbDbAdapter(
     updateOne: updateOneInMongodb(client),
     deleteOne: deleteOneFromMongodb(client),
     getAll: getAllFromMongodb(client),
+    getMany: getManyFromMongodb(client),
   }
 }

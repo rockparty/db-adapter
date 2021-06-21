@@ -1,6 +1,7 @@
 import {
   DeleteOneFnArgs,
   GetAllFnArgs,
+  GetManyFnArgs,
   GetOneFnArgs,
   InsertOneFnArgs,
   UpdateOneFnArgs,
@@ -43,4 +44,10 @@ export const deleteOneArgs: DeleteOneFnArgs<Foo> = {
 
 export const getAllArgs: GetAllFnArgs<Foo> = {
   from: collectionName,
+}
+
+export const getManyArgs: GetManyFnArgs<Foo> = {
+  from: collectionName,
+  by: key,
+  matching: value,
 }
