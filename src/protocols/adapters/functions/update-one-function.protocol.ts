@@ -1,17 +1,20 @@
 import type { CombineArgsAndOptions } from './helpers'
 
-interface UpdateOneArgs<T, U extends Partial<T>> {
-  from: string
+interface UpdateOneArgs<T = any, Collection extends string = string> {
+  from: Collection
   by: keyof T & string
   matching: unknown
-  as: U
+  as: Partial<T>
 }
 
-export type UpdateOneFnArgs<T, U, O = undefined> = CombineArgsAndOptions<
-  UpdateOneArgs<T, U>,
-  O
->
+export type UpdateOneFnArgs<
+  O = undefined,
+  T = any,
+  Collection extends string = string,
+> = CombineArgsAndOptions<UpdateOneArgs<T, Collection>, O>
 
-export type UpdateOneFn<O = undefined> = <T, U>(
-  args: UpdateOneFnArgs<T, U, O>,
-) => Promise<(T & U) | null>
+export type UpdateOneFn<O = undefined, Collection extends string = string> = <
+  T,
+>(
+  args: UpdateOneFnArgs<O, T, Collection>,
+) => Promise<T | null>

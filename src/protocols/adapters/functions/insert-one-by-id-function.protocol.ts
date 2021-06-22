@@ -1,16 +1,27 @@
 import type { CombineArgsAndOptions } from './helpers'
 
-interface InsertOneByIdArgs<T> {
-  in: string
+interface InsertOneByIdArgs<
+  T = any,
+  IdKey extends keyof T & string = any,
+  Collection extends string = string,
+> {
+  in: Collection
   as: T
-  idKey: keyof T & string
+  idKey: IdKey
 }
 
-export type InsertOneByIdFnArgs<T, O = undefined> = CombineArgsAndOptions<
-  InsertOneByIdArgs<T>,
-  O
->
+export type InsertOneByIdFnArgs<
+  O = undefined,
+  T = any,
+  IdKey extends keyof T & string = any,
+  Collection extends string = string,
+> = CombineArgsAndOptions<InsertOneByIdArgs<T, IdKey, Collection>, O>
 
-export type InsertOneByIdFn<O = undefined> = <T>(
-  args: InsertOneByIdFnArgs<T, O>,
+export type InsertOneByIdFn<
+  O = undefined,
+  Base = any,
+  IdKey extends keyof Base & string = any,
+  Collection extends string = string,
+> = <T extends Base>(
+  args: InsertOneByIdFnArgs<O, T, IdKey, Collection>,
 ) => Promise<T>
